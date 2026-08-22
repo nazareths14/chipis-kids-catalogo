@@ -1,0 +1,12 @@
+{
+  "name": "chipis-kids-catalogo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Catálogo digital de Chipis Kids",
+  "scripts": {
+    "start": "serve -s . -l ${PORT:-3000}"
+  },
+  "dependencies": {
+    "serve": "^14.2.3"
+  }
+}
