@@ -382,13 +382,16 @@ footer {
 </div>
 
 <div class="filter-bar" id="filterBar">
-  <button class="filter-pill active" data-filter="all">Todo <span class="count">333</span></button>
-  <button class="filter-pill" data-filter="unisex">Unisex <span class="count">12</span></button>
-<button class="filter-pill" data-filter="ninas">Niñas <span class="count">184</span></button>
-<button class="filter-pill" data-filter="ninos">Niños <span class="count">118</span></button>
-<button class="filter-pill" data-filter="navidad">Navidad <span class="count">11</span></button>
-<button class="filter-pill" data-filter="escolares">Escolares <span class="count">4</span></button>
-<button class="filter-pill" data-filter="accesorios">Accesorios y juguetes <span class="count">4</span></button>
+  <label class="size-select-label" for="catSelect">Filtrar por categoría</label>
+  <select class="size-select" id="catSelect">
+    <option value="all" selected>Todo (333)</option>
+    <option value="unisex">Unisex (12)</option>
+    <option value="ninas">Niñas (184)</option>
+    <option value="ninos">Niños (118)</option>
+    <option value="navidad">Navidad (11)</option>
+    <option value="escolares">Escolares (4)</option>
+    <option value="accesorios">Accesorios y juguetes (4)</option>
+  </select>
 </div>
 
 <div class="filter-bar size-filter-bar" id="sizeFilterBar">
@@ -809,7 +812,7 @@ footer {
 
 <script>
 (function() {
-  var catBar = document.getElementById('filterBar');
+  var catSelect = document.getElementById('catSelect');
   var sizeSelect = document.getElementById('sizeSelect');
   var sections = document.querySelectorAll('.cat-section');
   var cards = document.querySelectorAll('.card');
@@ -835,12 +838,8 @@ footer {
     });
   }
 
-  catBar.addEventListener('click', function(e) {
-    var btn = e.target.closest('.filter-pill');
-    if (!btn) return;
-    catBar.querySelectorAll('.filter-pill').forEach(function(b) { b.classList.remove('active'); });
-    btn.classList.add('active');
-    activeCat = btn.getAttribute('data-filter');
+  catSelect.addEventListener('change', function() {
+    activeCat = catSelect.value;
     applyFilters();
   });
 
