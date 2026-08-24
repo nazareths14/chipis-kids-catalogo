@@ -3,11 +3,13 @@
   "version": "2.0.0",
   "private": true,
   "description": "Catalogo digital de Chipis Kids con panel de administracion",
+  "engines": {
+    "node": ">=22.5.0"
+  },
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "better-sqlite3": "^11.3.0",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "multer": "^2.2.0"

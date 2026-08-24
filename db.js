@@ -1,6 +1,6 @@
 const path = require("path");
 const fs = require("fs");
-const Database = require("better-sqlite3");
+const { DatabaseSync } = require("node:sqlite");
 
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, ".data");
 const UPLOADS_DIR = path.join(DATA_DIR, "uploads");
@@ -8,8 +8,8 @@ const DB_PATH = path.join(DATA_DIR, "chipis.db");
 
 fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 
-const db = new Database(DB_PATH);
-db.pragma("journal_mode = WAL");
+const db = new DatabaseSync(DB_PATH);
+db.exec("PRAGMA journal_mode = WAL");
 
 db.exec(`
 CREATE TABLE IF NOT EXISTS products (
@@ -64,8 +64,9 @@ function seedIfEmpty() {
   `);
 
   const seedPhotosDir = path.join(__dirname, "seed", "photos");
-  const tx = db.transaction((rows) => {
-    rows.forEach((it, idx) => {
+  db.exec("BEGIN");
+  try {
+    ordered.forEach((it, idx) => {
       const sku = String(idx + 1).padStart(4, "0");
       const srcFile = `page_${String(it.page).padStart(4, "0")}.jpg`;
       const srcPath = path.join(seedPhotosDir, srcFile);
@@ -89,8 +90,11 @@ function seedIfEmpty() {
         sort_order: idx,
       });
     });
-  });
-  tx(ordered);
+    db.exec("COMMIT");
+  } catch (e) {
+    db.exec("ROLLBACK");
+    throw e;
+  }
 
   const setSetting = db.prepare("INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)");
   setSetting.run("whatsapp_number", process.env.WHATSAPP_NUMBER || "584221810419");
