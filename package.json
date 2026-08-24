@@ -1,12 +1,15 @@
 {
   "name": "chipis-kids-catalogo",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "Catálogo digital de Chipis Kids",
+  "description": "Catalogo digital de Chipis Kids con panel de administracion",
   "scripts": {
-    "start": "serve -s . -l ${PORT:-3000}"
+    "start": "node server.js"
   },
   "dependencies": {
-    "serve": "^14.2.3"
+    "better-sqlite3": "^11.3.0",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "multer": "^2.2.0"
   }
 }
